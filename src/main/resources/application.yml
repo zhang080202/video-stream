@@ -3,7 +3,10 @@ server:
 
 spring:
   datasource:
-    url: jdbc:sqlite:D:\sqlite\camera.db
+#    url: jdbc:sqlite:D:\sqlite\camera.db
+    url: jdbc:sqlite:/home/software/db/camera.db
     driver-class-name: org.sqlite.JDBC
     username: 
     password: 
+
+countUrl: http://10.0.0.253/open/service  

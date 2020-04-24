@@ -47,13 +47,10 @@ public class CameraServiceImpl implements ICameraService {
 		Map<String, Object> result = new HashMap<>();
 		
 		for (CameraConfigDO cameraConfigDO : cameras) {
-			String rtmpResult = cameraContext.openCamera(cameraConfigDO);
-			if (rtmpResult == null) continue;
-			
-			result.put(cameraConfigDO.getCameraName(), rtmpResult);
+			result.put(cameraConfigDO.getCameraName(), cameraContext.openCamera(cameraConfigDO));
 		}
 		Collection<CommandTasker> tasks = ComandManagerHolder.getCommandManager().queryAll();
-		logger.info("当前已开启摄像头有 {} 个，详情：", tasks.size(), tasks);
+		logger.info("当前已开启摄像头有 {} 个，详情：{}", tasks.size(), tasks.toString());
 		return result;
 	}
 

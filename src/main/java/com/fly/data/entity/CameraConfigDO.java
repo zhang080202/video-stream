@@ -14,6 +14,14 @@ public class CameraConfigDO {
 
 	private String remark;
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getCameraType() {
 		return cameraType;
 	}
@@ -36,14 +44,6 @@ public class CameraConfigDO {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getCameraName() {

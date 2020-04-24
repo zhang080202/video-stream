@@ -14,28 +14,33 @@ public class CameraOperation implements CameraOperationSuper {
 	
 	@Override
 	public String openCamera(CameraConfigDO cameraConfigDO) {
+		String rtmpResult = null;
 		//检查配置中的摄像头是否已经开始拉流
 		CommandTasker tasker = ComandManagerHolder.getCommandManager().query(cameraConfigDO.getCameraName());
-		if (tasker != null) return null;
-		
-		StringBuffer output = new StringBuffer("rtmp://");
-		output.append(CommonUtils.getLocalIP())
-			  .append("/live/")
-			  .append(cameraConfigDO.getCameraName());
-		
-		String id = cameraConfigDO.getCameraName();
-		String rtmpResult = output.toString(); 
-		
-		String start = ComandManagerHolder.getCommandManager().start(cameraConfigDO.getCameraName(), CommandBuidlerFactory.createBuidler()
-				.add("ffmpeg")
-				.add("-rtsp_transport", "tcp")
-				.add("-i", cameraConfigDO.getCameraUrl())
-				.add("-f", "flv")
-				.add("-an", output.toString()));
-		
-		if (start == null || start.equals("")) {
-			rtmpResult = id + " 该摄像头开启失败，请检查配置";
+		if (tasker != null) {
+			String command = tasker.getCommand();
+			rtmpResult = command.substring(command.indexOf("rtmp"));
+		} else {
+			StringBuffer output = new StringBuffer("rtmp://");
+			output.append(CommonUtils.getLocalIP())
+				  .append("/live/")
+				  .append(cameraConfigDO.getCameraName());
+			
+			String id = cameraConfigDO.getCameraName();
+			rtmpResult = output.toString(); 
+			
+			String start = ComandManagerHolder.getCommandManager().start(cameraConfigDO.getCameraName(), CommandBuidlerFactory.createBuidler()
+					.add("ffmpeg")
+					.add("-rtsp_transport", "tcp")
+					.add("-i", cameraConfigDO.getCameraUrl())
+					.add("-f", "flv")
+					.add("-an", output.toString()));
+			
+			if (start == null || start.equals("")) {
+				rtmpResult = id + " 该摄像头开启失败，请检查配置";
+			}
 		}
+		
 		return rtmpResult;
 	} 
 	
