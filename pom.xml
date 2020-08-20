@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.fly</groupId>
 	<artifactId>video-stream</artifactId>
-	<version>1.0.0</version>
+	<version>1.2.0</version>
 	<name>video-stream</name>
 	<description>使用ffmpeg 转换摄像头流 rtmp</description>
 
@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>cc.eguid.ffch4j</groupId>
 			<artifactId>ffch4j</artifactId>
-			<version>18.12.02-SNAPSHOT</version>
+			<version>18.12.03-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

@@ -19,29 +19,40 @@ public class CameraOperation implements CameraOperationSuper {
 		CommandTasker tasker = ComandManagerHolder.getCommandManager().query(cameraConfigDO.getCameraName());
 		if (tasker != null) {
 			String command = tasker.getCommand();
-			rtmpResult = command.substring(command.indexOf("rtmp"));
-		} else {
-			StringBuffer output = new StringBuffer("rtmp://");
-			output.append(CommonUtils.getLocalIP())
-				  .append("/live/")
-				  .append(cameraConfigDO.getCameraName());
-			
-			String id = cameraConfigDO.getCameraName();
-			rtmpResult = output.toString(); 
-			
-			String start = ComandManagerHolder.getCommandManager().start(cameraConfigDO.getCameraName(), CommandBuidlerFactory.createBuidler()
-					.add("ffmpeg")
-					.add("-rtsp_transport", "tcp")
-					.add("-i", cameraConfigDO.getCameraUrl())
-					.add("-f", "flv")
-					.add("-an", output.toString()));
-			
-			if (start == null || start.equals("")) {
-				rtmpResult = id + " 该摄像头开启失败，请检查配置";
+			Process process = tasker.getProcess();
+			if (process.isAlive()) {
+				rtmpResult = command.substring(command.indexOf("rtmp"));
+			} else {
+				ComandManagerHolder.getCommandManager().stop(cameraConfigDO.getCameraName());
+				rtmpResult = open(cameraConfigDO);
 			}
+		} else {
+			rtmpResult = open(cameraConfigDO);
 		}
 		
 		return rtmpResult;
-	} 
+	}
+	
+	private String open(CameraConfigDO cameraConfigDO) {
+		StringBuffer output = new StringBuffer("rtmp://");
+		output.append(CommonUtils.getLocalIP())
+			  .append("/live/")
+			  .append(cameraConfigDO.getCameraName());
+		
+		String id = cameraConfigDO.getCameraName();
+		String rtmpResult = output.toString(); 
+		
+		String start = ComandManagerHolder.getCommandManager().start(cameraConfigDO.getCameraName(), CommandBuidlerFactory.createBuidler()
+				.add("ffmpeg")
+				.add("-rtsp_transport", "tcp")
+				.add("-i", cameraConfigDO.getCameraUrl())
+				.add("-f", "flv")
+				.add("-an", output.toString()));
+		
+		if (start == null || start.equals("")) {
+			rtmpResult = id + " 该摄像头开启失败，请检查配置";
+		}
+		return rtmpResult;
+	}
 	
 }
