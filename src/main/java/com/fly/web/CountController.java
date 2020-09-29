@@ -16,10 +16,12 @@ import com.fly.data.common.ResponseBean;
 import com.fly.exception.ServiceException;
 import com.ruijie.wmc.open.ClientHelper;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/count")
+@Api("景区数据相关接口")
 public class CountController {
 	
 	@Autowired

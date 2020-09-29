@@ -1,16 +1,19 @@
 package com.fly.camera;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.fly.data.entity.CameraConfigDO;
 import com.fly.utils.ComandManagerHolder;
-import com.fly.utils.CommonUtils;
 
 import cc.eguid.commandManager.commandbuidler.CommandBuidlerFactory;
 import cc.eguid.commandManager.data.CommandTasker;
 
 @Component
 public class CameraOperation implements CameraOperationSuper {
+	
+	@Value("${local-ip}")
+	private String localIp;
 	
 	@Override
 	public String openCamera(CameraConfigDO cameraConfigDO) {
@@ -35,7 +38,7 @@ public class CameraOperation implements CameraOperationSuper {
 	
 	private String open(CameraConfigDO cameraConfigDO) {
 		StringBuffer output = new StringBuffer("rtmp://");
-		output.append(CommonUtils.getLocalIP())
+		output.append(localIp)
 			  .append("/live/")
 			  .append(cameraConfigDO.getCameraName());
 		

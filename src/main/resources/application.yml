@@ -9,6 +9,7 @@ spring:
     username: 
     password: 
 
+local-ip: 172.16.5.253
 countUrl: http://10.0.0.253/open/service
 md5: QU67PV9ID0T0
 des3: 8EC2JIBXXDDGYW99WGDMOPNS
